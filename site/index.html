@@ -9,22 +9,21 @@
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
   <link href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,500;9..144,650&family=Instrument+Sans:wght@400;500;600&family=JetBrains+Mono:wght@500&display=swap" rel="stylesheet" />
   <style>
-    /* Tons quentes e levemente terrosos, sem branco puro e sem cinza puro.
-       O laranja é próximo ao do Claude Code. */
+    /* Creme suave com verde-petróleo e destaque amarelo. Sem branco puro. */
     :root {
       color-scheme: light;
-      --paper: #efe7d8;
-      --paper-raised: #f6f0e3;
-      --panel: #e7dcc7;
-      --ink: #2a2118;
-      --ink-soft: #6b5d4c;
-      --line: #d4c6ad;
-      --accent: #c4552b;
-      --accent-strong: #a9441f;
-      --accent-tint: #f3d9c6;
-      --on-accent: #fff8ef;
-      --flag: #f5dcc4;
-      --flag-ink: #6e3418;
+      --paper: #f5f1e8;
+      --paper-raised: #fbf8f1;
+      --panel: #ece6d8;
+      --ink: #1f2a24;
+      --ink-soft: #4d5a52;
+      --line: #d6cdb8;
+      --accent: #0d6a5a;
+      --accent-strong: #0a5447;
+      --accent-tint: #f2e3ad;
+      --on-accent: #f5f1e8;
+      --flag: #f2d98a;
+      --flag-ink: #3d3210;
       --display: "Fraunces", "Iowan Old Style", Georgia, serif;
       --text: "Instrument Sans", "Helvetica Neue", Arial, sans-serif;
       --mono: "JetBrains Mono", ui-monospace, Consolas, monospace;
@@ -32,18 +31,18 @@
     @media (prefers-color-scheme: dark) {
       :root:not([data-theme="light"]) {
         color-scheme: dark;
-        --paper: #211b15;
-        --paper-raised: #2a231b;
-        --panel: #322a20;
-        --ink: #f1e7d6;
-        --ink-soft: #bfb19b;
-        --line: #4a3f32;
-        --accent: #e0703f;
-        --accent-strong: #f08a5c;
-        --accent-tint: #4a2c1d;
-        --on-accent: #1d140e;
-        --flag: #4a3220;
-        --flag-ink: #f7d9bd;
+        --paper: #14191a;
+        --paper-raised: #1b2224;
+        --panel: #222b2d;
+        --ink: #e8ece6;
+        --ink-soft: #a7b3ab;
+        --line: #33403f;
+        --accent: #5fc2ae;
+        --accent-strong: #8ad9c8;
+        --accent-tint: #4a4316;
+        --on-accent: #10201c;
+        --flag: #3d3a1c;
+        --flag-ink: #f6e7b0;
       }
     }
 
@@ -121,9 +120,9 @@
       padding: 0.25rem 0.65rem; white-space: nowrap;
       background: var(--accent-tint); color: var(--flag-ink);
     }
-    .chip.ok { background: #d9e8d2; color: #2c4a24; }
+    .chip.ok { background: #d5e8dc; color: #1d4a3a; }
     @media (prefers-color-scheme: dark) {
-      :root:not([data-theme="light"]) .chip.ok { background: #2b3e2a; color: #cfe7c6; }
+      :root:not([data-theme="light"]) .chip.ok { background: #1f3a31; color: #cfe9de; }
     }
     .segments { list-style: none; margin: 0; padding: 0; display: grid; gap: 0.25rem; }
     .seg {
