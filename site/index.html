@@ -3,8 +3,8 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>IntegraMeet: reuniões transcritas no seu computador</title>
-  <meta name="description" content="Grave, transcreva e organize suas reuniões com IA que roda no seu computador. Gratuito, código aberto e sem envio de dados." />
+  <title>IntegraMeet: transforme suas reuniões em tarefas, no seu computador</title>
+  <meta name="description" content="Grave a reunião e receba o texto, o resumo e as tarefas combinadas. Gratuito, de código aberto, e nada sai do seu computador." />
   <link rel="preconnect" href="https://fonts.googleapis.com" />
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
   <link href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,500;9..144,650&family=Instrument+Sans:wght@400;500;600&family=JetBrains+Mono:wght@500&display=swap" rel="stylesheet" />
@@ -16,14 +16,15 @@
       --paper-raised: #fbf8f1;
       --panel: #ece6d8;
       --ink: #1f2a24;
-      --ink-soft: #4d5a52;
+      --ink-soft: #4a5750;
       --line: #d6cdb8;
       --accent: #0d6a5a;
       --accent-strong: #0a5447;
       --accent-tint: #f2e3ad;
       --on-accent: #f5f1e8;
-      --flag: #f2d98a;
       --flag-ink: #3d3210;
+      --ok-tint: #d5e8dc;
+      --ok-ink: #1d4a3a;
       --display: "Fraunces", "Iowan Old Style", Georgia, serif;
       --text: "Instrument Sans", "Helvetica Neue", Arial, sans-serif;
       --mono: "JetBrains Mono", ui-monospace, Consolas, monospace;
@@ -41,13 +42,14 @@
         --accent-strong: #8ad9c8;
         --accent-tint: #4a4316;
         --on-accent: #10201c;
-        --flag: #3d3a1c;
         --flag-ink: #f6e7b0;
+        --ok-tint: #1f3a31;
+        --ok-ink: #cfe9de;
       }
     }
 
     * { box-sizing: border-box; }
-    html { -webkit-text-size-adjust: 100%; }
+    html { -webkit-text-size-adjust: 100%; scroll-behavior: smooth; }
     body {
       margin: 0;
       background: var(--paper);
@@ -57,40 +59,50 @@
       line-height: 1.6;
     }
     a { color: var(--accent-strong); text-underline-offset: 3px; }
-    a:focus-visible, .btn:focus-visible {
-      outline: 3px solid var(--accent);
-      outline-offset: 3px;
-      border-radius: 6px;
+    :focus-visible { outline: 3px solid var(--accent); outline-offset: 3px; border-radius: 6px; }
+    .skip {
+      position: absolute; left: 1rem; top: -4rem; background: var(--ink); color: var(--paper);
+      padding: 0.6rem 1rem; border-radius: 8px; z-index: 10; text-decoration: none;
     }
+    .skip:focus { top: 1rem; }
     .wrap { width: 100%; max-width: 1120px; margin: 0 auto; padding: 0 1.25rem; }
     h1, h2, h3 { font-family: var(--display); font-weight: 600; letter-spacing: -0.015em; line-height: 1.12; margin: 0; }
     p { margin: 0; }
     .eyebrow { font-size: 0.8125rem; font-weight: 600; letter-spacing: 0.12em; text-transform: uppercase; color: var(--accent-strong); }
+    .lead-text { color: var(--ink-soft); max-width: 40rem; margin-top: 1rem; font-size: 1.1rem; }
 
     /* Cabeçalho */
-    .top { display: flex; align-items: center; justify-content: space-between; padding: 1.5rem 0; }
+    .top { display: flex; align-items: center; justify-content: space-between; gap: 1rem; padding: 1.25rem 0; }
     .brand { display: inline-flex; align-items: center; gap: 0.6rem; font-family: var(--display); font-weight: 650; font-size: 1.25rem; color: var(--ink); text-decoration: none; }
     .brand-mark { width: 1.6rem; height: 1.6rem; border-radius: 8px; background: var(--accent); display: flex; align-items: center; justify-content: center; gap: 2px; }
     .brand-mark i { display: block; width: 3px; border-radius: 2px; background: var(--on-accent); }
-    .top nav a { color: var(--ink-soft); text-decoration: none; font-size: 0.9375rem; margin-left: 1.5rem; }
+    .top nav { display: flex; gap: 1.5rem; }
+    .top nav a { color: var(--ink-soft); text-decoration: none; font-size: 0.975rem; }
     .top nav a:hover { color: var(--ink); text-decoration: underline; }
 
-    /* Botão principal */
+    /* Botões */
     .btn {
       display: inline-flex; align-items: center; justify-content: center; gap: 0.6rem;
       background: var(--accent); color: var(--on-accent);
       text-decoration: none; font-weight: 600; font-size: 1.0625rem;
       padding: 0.95rem 1.6rem; border-radius: 12px;
-      box-shadow: 0 1px 0 rgba(255,255,255,.25) inset, 0 6px 18px -8px var(--accent);
+      box-shadow: 0 6px 18px -10px var(--accent);
+      border: 0; cursor: pointer;
     }
     .btn:hover { background: var(--accent-strong); }
-    .btn-note { font-size: 0.9375rem; color: var(--ink-soft); margin-top: 0.9rem; max-width: 26rem; }
+    .btn-ghost {
+      background: transparent; color: var(--accent-strong);
+      box-shadow: none; border: 1.5px solid var(--accent);
+    }
+    .btn-ghost:hover { background: var(--accent-tint); }
+    .btn-sub { display: block; font-size: 0.875rem; color: var(--ink-soft); margin-top: 0.6rem; }
 
     /* Herói */
-    .hero { display: grid; gap: 3.5rem; padding: 3.5rem 0 5.5rem; align-items: center; }
-    .hero h1 { font-size: clamp(2.6rem, 6vw, 4.4rem); margin: 0.85rem 0 1.35rem; }
-    .lead { font-size: 1.25rem; color: var(--ink-soft); max-width: 34rem; }
+    .hero { display: grid; gap: 3.25rem; padding: 3rem 0 4.5rem; align-items: center; }
+    .hero h1 { font-size: clamp(2.5rem, 5.6vw, 4.2rem); margin: 0.9rem 0 1.25rem; }
     .hero-actions { margin-top: 2.25rem; }
+    .facts { list-style: none; margin: 2rem 0 0; padding: 0; display: flex; flex-wrap: wrap; gap: 0.6rem 1.25rem; font-size: 0.95rem; color: var(--ink-soft); }
+    .facts li::before { content: "✓"; color: var(--accent); font-weight: 700; margin-right: 0.4rem; }
 
     /* Janela de demonstração */
     .window {
@@ -98,111 +110,92 @@
       background: var(--paper-raised);
       border: 1px solid var(--line);
       border-radius: 18px;
-      box-shadow: 0 30px 60px -32px rgba(60, 35, 15, .45), 0 2px 6px rgba(60, 35, 15, .08);
+      box-shadow: 0 30px 60px -32px rgba(40, 45, 30, .4), 0 2px 6px rgba(40, 45, 30, .07);
       overflow: hidden;
     }
-    .window-bar {
-      display: flex; align-items: center; gap: 0.5rem;
-      padding: 0.8rem 1rem;
-      background: var(--panel);
-      border-bottom: 1px solid var(--line);
-      font-size: 0.8125rem; color: var(--ink-soft);
-    }
+    .window-bar { display: flex; align-items: center; gap: 0.5rem; padding: 0.75rem 1rem; background: var(--panel); border-bottom: 1px solid var(--line); font-size: 0.8125rem; }
     .window-bar .dot { width: 0.6rem; height: 0.6rem; border-radius: 50%; background: var(--line); }
-    .window-bar .title { margin-left: auto; margin-right: auto; font-weight: 500; color: var(--ink); }
-    .window-body { padding: 1.4rem 1.4rem 1.2rem; }
-    .meeting-head { display: flex; align-items: flex-start; justify-content: space-between; gap: 1rem; margin-bottom: 1.1rem; }
+    .window-bar .title { margin: 0 auto; font-weight: 600; color: var(--ink); }
+    .window-tag { font-size: 0.75rem; color: var(--ink-soft); }
+    .window-body { padding: 1.35rem 1.4rem 1.1rem; }
+    .meeting-head { display: flex; align-items: flex-start; justify-content: space-between; gap: 1rem; margin-bottom: 1rem; flex-wrap: wrap; }
     .meeting-head h3 { font-size: 1.35rem; }
     .meeting-head p { color: var(--ink-soft); font-size: 0.875rem; margin-top: 0.2rem; }
-    .chip {
-      display: inline-flex; align-items: center; gap: 0.4rem;
-      font-size: 0.78rem; font-weight: 600; border-radius: 999px;
-      padding: 0.25rem 0.65rem; white-space: nowrap;
-      background: var(--accent-tint); color: var(--flag-ink);
-    }
-    .chip.ok { background: #d5e8dc; color: #1d4a3a; }
-    @media (prefers-color-scheme: dark) {
-      :root:not([data-theme="light"]) .chip.ok { background: #1f3a31; color: #cfe9de; }
-    }
+    .chip { display: inline-flex; align-items: center; font-size: 0.78rem; font-weight: 600; border-radius: 999px; padding: 0.25rem 0.7rem; white-space: nowrap; background: var(--ok-tint); color: var(--ok-ink); }
     .segments { list-style: none; margin: 0; padding: 0; display: grid; gap: 0.25rem; }
-    .seg {
-      display: grid; grid-template-columns: 3.6rem 1fr; gap: 0.9rem;
-      padding: 0.7rem 0.75rem; border-radius: 10px;
-    }
+    .seg { display: grid; grid-template-columns: 3.4rem 1fr; gap: 0.9rem; padding: 0.65rem 0.75rem; border-radius: 10px; }
     .seg time { font-family: var(--mono); font-size: 0.8rem; color: var(--ink-soft); padding-top: 0.2rem; }
-    .seg .who { display: block; font-size: 0.78rem; color: var(--ink-soft); margin-bottom: 0.15rem; font-weight: 500; }
+    .seg .who { display: block; font-size: 0.78rem; color: var(--ink-soft); margin-bottom: 0.1rem; font-weight: 500; }
     .seg p { font-size: 0.975rem; }
     .seg.marked { background: var(--accent-tint); }
-    .seg.marked .label { display: inline-block; font-size: 0.72rem; font-weight: 700; letter-spacing: 0.06em; text-transform: uppercase; color: var(--flag-ink); margin-bottom: 0.2rem; }
+    .seg .label { display: inline-block; font-size: 0.72rem; font-weight: 700; letter-spacing: 0.06em; text-transform: uppercase; color: var(--flag-ink); margin-bottom: 0.15rem; }
     .seg.noise p { color: var(--ink-soft); font-style: italic; }
     .seg.playing { box-shadow: inset 0 0 0 1.5px var(--accent); }
-    .window-foot {
-      display: flex; align-items: center; justify-content: space-between; gap: 1rem;
-      border-top: 1px solid var(--line); padding: 0.95rem 1.4rem;
-      font-size: 0.85rem; color: var(--ink-soft);
-      background: var(--paper);
-    }
-    .window-foot strong { color: var(--ink); font-weight: 600; }
+    .window-foot { display: flex; align-items: center; justify-content: space-between; gap: 1rem; flex-wrap: wrap; border-top: 1px solid var(--line); padding: 0.85rem 1.4rem; font-size: 0.85rem; color: var(--ink-soft); background: var(--paper); }
+    .window-foot strong { color: var(--accent-strong); font-weight: 600; }
 
     /* Seções */
-    section { padding: 5rem 0; border-top: 1px solid var(--line); }
-    section h2 { font-size: clamp(2rem, 4vw, 2.75rem); max-width: 22ch; }
-    .intro { color: var(--ink-soft); max-width: 40rem; margin-top: 1rem; }
+    section { padding: 4.75rem 0; border-top: 1px solid var(--line); }
+    section h2 { font-size: clamp(2rem, 4vw, 2.7rem); max-width: 24ch; }
 
-    /* Recursos: lista editorial */
-    .features { margin-top: 2.75rem; list-style: none; padding: 0; display: grid; }
-    .features li { display: grid; grid-template-columns: 3rem 1fr; gap: 1rem; padding: 1.6rem 0; border-top: 1px solid var(--line); }
-    .features li:last-child { border-bottom: 1px solid var(--line); }
-    .num { font-family: var(--display); color: var(--accent-strong); font-size: 1.1rem; font-weight: 600; padding-top: 0.2rem; }
-    .features h3 { font-size: 1.35rem; margin-bottom: 0.4rem; }
-    .features p { color: var(--ink-soft); max-width: 38rem; }
+    /* Como usar: cada passo com o que a pessoa vê */
+    .steps { margin: 2.5rem 0 0; padding: 0; list-style: none; display: grid; gap: 0; counter-reset: passo; }
+    .steps li { counter-increment: passo; display: grid; grid-template-columns: 3.2rem 1fr; gap: 1rem; padding: 1.5rem 0; border-top: 1px solid var(--line); }
+    .steps li:last-child { border-bottom: 1px solid var(--line); }
+    .steps li::before { content: counter(passo); font-family: var(--display); font-size: 1.6rem; font-weight: 600; color: var(--accent-strong); line-height: 1; }
+    .steps h3 { font-size: 1.3rem; margin-bottom: 0.35rem; }
+    .steps p { color: var(--ink-soft); max-width: 40rem; }
+    .steps .time { display: inline-block; margin-top: 0.5rem; font-size: 0.85rem; color: var(--ink-soft); }
 
-    /* Passos */
-    .steps { margin: 2.75rem 0 0; padding: 0; list-style: none; counter-reset: passo; display: grid; gap: 1.4rem; }
-    .steps li { counter-increment: passo; display: grid; grid-template-columns: 3rem 1fr; gap: 1rem; align-items: start; }
-    .steps li::before {
-      content: counter(passo);
-      width: 2.25rem; height: 2.25rem; border-radius: 50%;
-      display: grid; place-items: center;
-      background: var(--accent-tint); color: var(--flag-ink);
-      font-family: var(--display); font-weight: 600;
+    /* Funcionalidades: frase curta + ajuda */
+    .features { margin: 2.5rem 0 0; display: grid; gap: 1.25rem; grid-template-columns: 1fr; }
+    .feature { padding: 1.5rem 0; border-top: 2px solid var(--accent); }
+    .feature h3 { font-size: 1.35rem; margin-bottom: 0.45rem; }
+    .feature p { color: var(--ink-soft); }
+
+    /* Aviso do Windows, na hora do download */
+    .install {
+      background: var(--panel); border-radius: 20px; padding: 2rem; margin-top: 2.5rem;
+      display: grid; gap: 1.5rem;
     }
-    .steps strong { display: block; font-weight: 600; font-size: 1.075rem; }
-    .steps span { color: var(--ink-soft); }
+    .install h3 { font-size: 1.4rem; }
+    .install ol { margin: 0.8rem 0 0; padding-left: 1.25rem; display: grid; gap: 0.5rem; color: var(--ink-soft); }
+    .install ol strong { color: var(--ink); }
+    .install .why { font-size: 0.95rem; color: var(--ink-soft); }
 
-    /* Requisitos */
-    .specs { margin: 2.75rem 0 0; display: grid; gap: 0; }
-    .specs div { display: grid; gap: 0.25rem; padding: 1.1rem 0; border-top: 1px solid var(--line); }
-    .specs div:last-child { border-bottom: 1px solid var(--line); }
-    .specs dt { font-weight: 600; }
-    .specs dd { margin: 0; color: var(--ink-soft); }
+    /* Perguntas frequentes */
+    .faq { margin: 2.5rem 0 0; display: grid; }
+    details { border-top: 1px solid var(--line); padding: 1.1rem 0; }
+    details:last-child { border-bottom: 1px solid var(--line); }
+    summary { cursor: pointer; font-weight: 600; font-size: 1.075rem; list-style: none; display: flex; justify-content: space-between; gap: 1rem; align-items: center; }
+    summary::-webkit-details-marker { display: none; }
+    summary::after { content: "+"; font-size: 1.4rem; line-height: 1; color: var(--accent-strong); }
+    details[open] summary::after { content: "–"; }
+    details p { color: var(--ink-soft); margin-top: 0.7rem; max-width: 44rem; }
 
-    /* Aviso do Windows */
-    .warn {
-      background: var(--flag); color: var(--flag-ink);
-      border-radius: 16px; padding: 1.4rem 1.6rem; margin-top: 2.5rem; max-width: 48rem;
-    }
-    .warn p + p { margin-top: 0.55rem; }
-    .warn a { color: var(--flag-ink); }
+    /* Requisitos em lista de verificação */
+    .checklist { margin: 2.5rem 0 0; padding: 0; list-style: none; display: grid; gap: 1rem; }
+    .checklist li { display: grid; grid-template-columns: 1.4rem 1fr; gap: 0.6rem; }
+    .checklist li::before { content: ""; width: 1.1rem; height: 1.1rem; margin-top: 0.3rem; border-radius: 4px; border: 2px solid var(--accent); }
+    .checklist b { display: block; }
+    .checklist span { color: var(--ink-soft); font-size: 0.975rem; }
 
-    /* Sobre */
-    .about { max-width: 42rem; margin-top: 1.25rem; color: var(--ink-soft); font-size: 1.1rem; }
-    .about strong { color: var(--ink); }
-    .cta-row { margin-top: 2.75rem; }
+    /* Chamada final */
+    .closing .lead-text { margin-bottom: 2rem; }
+    .cta-group { display: flex; gap: 1rem; flex-wrap: wrap; margin-top: 2rem; }
 
     footer { border-top: 1px solid var(--line); padding: 2rem 0 3rem; color: var(--ink-soft); font-size: 0.9375rem; }
-    footer .wrap { display: flex; flex-wrap: wrap; gap: 0.5rem 1.5rem; justify-content: space-between; }
+    footer .wrap { display: flex; flex-wrap: wrap; gap: 0.75rem 1.5rem; justify-content: space-between; }
     footer a { color: var(--ink-soft); }
 
     @media (min-width: 960px) {
       .hero { grid-template-columns: 1fr 1fr; }
-      .specs { grid-template-columns: repeat(2, 1fr); column-gap: 3rem; }
-      .specs div:nth-last-child(2) { border-bottom: 1px solid var(--line); }
-      .specs div:nth-last-child(1) { border-bottom: 0; }
+      .features { grid-template-columns: repeat(3, 1fr); column-gap: 2rem; }
+      .install { grid-template-columns: 1.1fr 1fr; align-items: start; }
     }
-    @media (max-width: 560px) {
-      .top nav a { margin-left: 1rem; }
-      .hero { padding-top: 2.25rem; }
+    @media (max-width: 640px) {
+      .top nav a:not(.keep) { display: none; }
+      .hero { padding-top: 2rem; }
       .btn { width: 100%; }
       .window-foot { flex-direction: column; align-items: flex-start; }
       .meeting-head { flex-direction: column; }
@@ -210,6 +203,8 @@
   </style>
 </head>
 <body>
+  <a class="skip" href="#principal">Pular para o conteúdo</a>
+
   <div class="wrap">
     <header class="top">
       <a class="brand" href="#">
@@ -217,39 +212,45 @@
         IntegraMeet
       </a>
       <nav aria-label="Principal">
-        <a href="#como-funciona">Como funciona</a>
-        <a href="#requisitos">Requisitos</a>
-        <a href="https://github.com/willianomiguel/IntegraMeet">Código</a>
+        <a href="#como-usar">Como usar</a>
+        <a href="#perguntas">Perguntas</a>
+        <a class="keep" href="https://github.com/willianomiguel/IntegraMeet">Código</a>
       </nav>
     </header>
   </div>
 
-  <main>
+  <main id="principal">
     <div class="wrap hero">
       <div>
-        <p class="eyebrow">Gratuito · Código aberto · Sem envio de dados</p>
-        <h1>Suas reuniões, transcritas e organizadas no seu computador.</h1>
-        <p class="lead">Grave a conversa, leia o texto com o tempo de cada fala e veja as decisões, tarefas e prazos que ficaram combinados. Nada sai da sua máquina.</p>
+        <p class="eyebrow">Gratuito · Código aberto · Para Windows</p>
+        <h1>Chega de anotar reunião. O IntegraMeet escreve tudo para você.</h1>
+        <p class="lead-text">Grave a conversa. Em alguns minutos você recebe o texto completo, um resumo e a lista de quem vai fazer o quê, até quando. Tudo acontece no seu computador.</p>
         <div class="hero-actions">
           <a class="btn" href="https://github.com/willianomiguel/IntegraMeet/releases/latest/download/IntegraMeet-Setup.exe">
-            Baixar para Windows
+            Baixar IntegraMeet para Windows
           </a>
-          <p class="btn-note">Windows 10 ou 11, 64 bits. O instalador tem cerca de 20 MB. Os modelos de IA são baixados depois, uma vez.</p>
+          <span class="btn-sub">Instalador de cerca de 20 MB. Não precisa criar conta.</span>
         </div>
+        <ul class="facts">
+          <li>Sem conta</li>
+          <li>Funciona sem internet depois de instalado</li>
+          <li>Suas reuniões não são enviadas para ninguém</li>
+        </ul>
       </div>
 
-      <figure class="window" aria-label="Exemplo de reunião no IntegraMeet">
+      <figure class="window" aria-label="Exemplo de como fica uma reunião no IntegraMeet">
         <div class="window-bar">
           <span class="dot"></span><span class="dot"></span><span class="dot"></span>
           <span class="title">IntegraMeet</span>
+          <span class="window-tag">exemplo</span>
         </div>
         <div class="window-body">
           <div class="meeting-head">
             <div>
-              <h3>Planejamento de equipe</h3>
-              <p>Hoje, 10:00 · 12 min</p>
+              <h3>Planejamento da equipe</h3>
+              <p>Hoje, 10h · 12 minutos</p>
             </div>
-            <span class="chip ok">Análise pronta</span>
+            <span class="chip">Resumo pronto</span>
           </div>
           <ol class="segments">
             <li class="seg">
@@ -275,98 +276,145 @@
           </ol>
         </div>
         <div class="window-foot">
-          <span>Clique em um trecho para ouvir a partir dele.</span>
-          <strong>Copiar transcrição</strong>
+          <span>Clique em qualquer frase para ouvir a reunião a partir dali.</span>
+          <strong>Copiar tudo</strong>
         </div>
       </figure>
     </div>
+
+    <section class="wrap" aria-labelledby="funciona">
+      <p class="eyebrow">O que você ganha</p>
+      <h2 id="funciona">Menos tempo anotando, mais tempo fazendo.</h2>
+      <div class="features">
+        <article class="feature">
+          <h3>Quem fica com o quê</h3>
+          <p>Tarefas, decisões e prazos aparecem em uma lista. O responsável e a data só entram quando alguém os disse na reunião.</p>
+        </article>
+        <article class="feature">
+          <h3>Conferir é rápido</h3>
+          <p>Cada item leva ao trecho exato da conversa. Você clica, ouve e confirma em segundos, antes de repassar.</p>
+        </article>
+        <article class="feature">
+          <h3>Achar uma reunião de novo</h3>
+          <p>Pesquise por um nome, um assunto ou uma frase que foi dita. O resultado abre a reunião no ponto certo.</p>
+        </article>
+      </div>
+    </section>
+
+    <section class="wrap" id="como-usar" aria-labelledby="como">
+      <p class="eyebrow">Como usar</p>
+      <h2 id="como">Da instalação à primeira reunião, passo a passo.</h2>
+      <ol class="steps">
+        <li>
+          <div>
+            <h3>Instale e abra</h3>
+            <p>Execute o arquivo que você baixou. Na primeira vez, o Windows pode pedir uma confirmação. Veja como resolver na seção “Antes de instalar”.</p>
+            <span class="time">Leva cerca de 1 minuto</span>
+          </div>
+        </li>
+        <li>
+          <div>
+            <h3>Deixe o app se preparar</h3>
+            <p>Uma tela guia você. O app confere o seu computador e escolhe a melhor configuração sozinho. Você não precisa entender nada técnico.</p>
+            <span class="time">Baixa os modelos de IA uma única vez</span>
+          </div>
+        </li>
+        <li>
+          <div>
+            <h3>Teste o microfone</h3>
+            <p>Um teste de 5 segundos grava, toca de volta e transcreve. Assim você sabe que a reunião vai ser gravada direito.</p>
+            <span class="time">Leva cerca de 1 minuto</span>
+          </div>
+        </li>
+        <li>
+          <div>
+            <h3>Grave sua reunião</h3>
+            <p>Clique em “Nova reunião”, dê um nome e comece. Você pode pausar. Ao finalizar, a transcrição e o resumo começam sozinhos.</p>
+            <span class="time">Depende do tamanho da reunião</span>
+          </div>
+        </li>
+      </ol>
+    </section>
+
+    <section class="wrap" aria-labelledby="instalar">
+      <p class="eyebrow">Antes de instalar</p>
+      <h2 id="instalar">Se o Windows mostrar um aviso, é normal.</h2>
+      <div class="install">
+        <div>
+          <p class="why">O IntegraMeet é um programa gratuito feito por voluntários, e ele ainda não tem a assinatura digital paga que o Windows costuma reconhecer. Por isso, o Windows mostra um aviso de “editor desconhecido”. O código está público para quem quiser verificar.</p>
+        </div>
+        <div>
+          <h3>Como continuar</h3>
+          <ol>
+            <li>Clique em <strong>Mais informações</strong>.</li>
+            <li>Clique em <strong>Executar assim mesmo</strong>.</li>
+            <li>Siga as telas de instalação.</li>
+          </ol>
+        </div>
+      </div>
+    </section>
+
+    <section class="wrap" id="perguntas" aria-labelledby="faq">
+      <p class="eyebrow">Perguntas frequentes</p>
+      <h2 id="faq">Dúvidas comuns</h2>
+      <div class="faq">
+        <details>
+          <summary>Preciso de internet para usar?</summary>
+          <p>Só na primeira vez, para baixar os modelos de IA (cerca de 2,5 GB no total). Depois disso, você pode gravar, transcrever e pesquisar sem internet.</p>
+        </details>
+        <details>
+          <summary>As minhas reuniões são enviadas para alguém?</summary>
+          <p>Não. O áudio, o texto e o resumo ficam guardados só no seu computador. O programa não tem conta, não tem telemetria e não envia nada para servidores.</p>
+        </details>
+        <details>
+          <summary>Preciso de uma placa de vídeo boa?</summary>
+          <p>Não. Sem placa de vídeo, o programa usa o processador e funciona, só que mais devagar. Se a sua placa for compatível com Vulkan (a maioria das NVIDIA, AMD e Intel recentes), tudo fica mais rápido.</p>
+        </details>
+        <details>
+          <summary>Funciona no Mac ou no celular?</summary>
+          <p>Por enquanto, só para Windows 10 (versão 2004 ou mais recente) e Windows 11, de 64 bits.</p>
+        </details>
+        <details>
+          <summary>Posso gravar uma reunião sem as outras pessoas saberem?</summary>
+          <p>Avise as outras pessoas antes de gravar. Em muitos lugares, gravar uma conversa sem o conhecimento de quem participa é proibido. Essa responsabilidade é de quem usa o programa.</p>
+        </details>
+        <details>
+          <summary>Quanto custa?</summary>
+          <p>Nada. O IntegraMeet é gratuito, de código aberto (licença MIT) e feito sem fins lucrativos. Não há plano pago nem anúncio.</p>
+        </details>
+        <details>
+          <summary>A transcrição ficou errada. O que faço?</summary>
+          <p>Reuniões com muito barulho, várias vozes ao mesmo tempo ou sotaques muito fortes podem ter erros. Use o botão para ouvir o trecho, confira e corrija. Os itens do resumo sempre mostram de onde vieram.</p>
+        </details>
+      </div>
+    </section>
+
+    <section class="wrap" aria-labelledby="requisitos">
+      <p class="eyebrow">Requisitos</p>
+      <h2 id="requisitos">Seu computador serve se…</h2>
+      <ul class="checklist">
+        <li><div><b>Tem Windows 10 ou 11, de 64 bits</b><span>Para saber, procure “Sobre” nas configurações do Windows.</span></div></li>
+        <li><div><b>Tem 8 GB de memória ou mais</b><span>Com 16 GB a análise das reuniões fica mais rápida.</span></div></li>
+        <li><div><b>Tem cerca de 6 GB livres no disco</b><span>Para os modelos de IA. As reuniões ocupam espaço extra.</span></div></li>
+      </ul>
+    </section>
+
+    <section class="wrap closing" aria-labelledby="baixar">
+      <p class="eyebrow">Pronto para começar?</p>
+      <h2 id="baixar">Baixe, instale e faça sua primeira reunião hoje.</h2>
+      <p class="lead-text">Quer ajudar a melhorar o projeto ou ver como ele funciona por dentro? Todo o código está no GitHub.</p>
+      <div class="cta-group">
+        <a class="btn" href="https://github.com/willianomiguel/IntegraMeet/releases/latest/download/IntegraMeet-Setup.exe">Baixar para Windows</a>
+        <a class="btn btn-ghost" href="https://github.com/willianomiguel/IntegraMeet">Ver o código</a>
+      </div>
+      <p class="lead-text" style="font-size:0.95rem;">Criado por <strong style="color:var(--ink);">willian_sdm</strong>. Acompanhe no <a href="https://www.instagram.com/willian_sdm/">Instagram</a>.</p>
+    </section>
   </main>
-
-  <section class="wrap" aria-labelledby="o-que-faz">
-    <p class="eyebrow">O que ele faz</p>
-    <h2 id="o-que-faz">Da gravação à lista de tarefas, sem sair do computador.</h2>
-    <p class="intro">Pensado para quem precisa lembrar o que foi combinado, não para quem quer mais um painel para administrar.</p>
-    <ol class="features">
-      <li>
-        <span class="num">01</span>
-        <div>
-          <h3>Grava a reunião</h3>
-          <p>Pelo microfone e, se você quiser, pelo áudio do computador, que é a voz das outras pessoas. Pausa e continuação ficam à mão.</p>
-        </div>
-      </li>
-      <li>
-        <span class="num">02</span>
-        <div>
-          <h3>Transcreve com o tempo de cada fala</h3>
-          <p>Você lê o texto, ouve a partir de qualquer frase e vê qual trecho está tocando. Dá para copiar a transcrição inteira com um clique.</p>
-        </div>
-      </li>
-      <li>
-        <span class="num">03</span>
-        <div>
-          <h3>Separa decisões, tarefas e prazos</h3>
-          <p>Responsável e prazo só aparecem quando alguém os citou na conversa. Cada item mostra o trecho de onde veio, então você confere antes de confiar.</p>
-        </div>
-      </li>
-      <li>
-        <span class="num">04</span>
-        <div>
-          <h3>Esconde barulho e música</h3>
-          <p>Um filtro tira as marcações de ambiente, como “barulho”, “música” ou “risos”, quando você preferir ver só a fala.</p>
-        </div>
-      </li>
-      <li>
-        <span class="num">05</span>
-        <div>
-          <h3>Acha qualquer reunião de novo</h3>
-          <p>A busca olha os títulos e tudo o que foi dito. O resultado abre a reunião exatamente no trecho encontrado.</p>
-        </div>
-      </li>
-    </ol>
-  </section>
-
-  <section class="wrap" id="como-funciona" aria-labelledby="como">
-    <p class="eyebrow">Como funciona</p>
-    <h2 id="como">Primeiro uso em cerca de dez minutos.</h2>
-    <p class="intro">Uma configuração guiada em português. Você não precisa escolher nada técnico.</p>
-    <ol class="steps">
-      <li><div><strong>Instale e abra</strong><span>Execute o arquivo baixado. Se o Windows avisar, veja a nota abaixo.</span></div></li>
-      <li><div><strong>Deixe o app verificar o computador</strong><span>Ele escolhe o desempenho adequado para a sua máquina.</span></div></li>
-      <li><div><strong>Espere os modelos ficarem prontos</strong><span>Eles são baixados uma vez e guardados aqui. Depois disso, o app funciona sem internet.</span></div></li>
-      <li><div><strong>Teste o microfone</strong><span>Um teste de 5 segundos grava, toca de volta e transcreve, para você confirmar que está tudo certo.</span></div></li>
-      <li><div><strong>Comece a reunião</strong><span>Clique em Nova reunião, grave e finalize. A transcrição e a análise começam sozinhas.</span></div></li>
-    </ol>
-    <div class="warn" role="note">
-      <p><strong>Aviso do Windows.</strong> O instalador ainda não tem assinatura digital, então o Windows pode mostrar “O Windows protegeu o computador”.</p>
-      <p>Clique em <em>Mais informações</em> e depois em <em>Executar assim mesmo</em>. Você pode conferir o arquivo pelo <code>SHA256SUMS.txt</code> da <a href="https://github.com/willianomiguel/IntegraMeet/releases/latest">página de releases</a>.</p>
-    </div>
-  </section>
-
-  <section class="wrap" id="requisitos" aria-labelledby="req">
-    <p class="eyebrow">Requisitos</p>
-    <h2 id="req">Roda em computadores comuns.</h2>
-    <dl class="specs">
-      <div><dt>Sistema</dt><dd>Windows 10 (versão 2004) ou Windows 11, 64 bits.</dd></div>
-      <div><dt>Memória</dt><dd>8 GB no mínimo. 16 GB deixam a análise mais confortável.</dd></div>
-      <div><dt>Placa de vídeo</dt><dd>Não é obrigatória. Com uma placa compatível com Vulkan (NVIDIA, AMD ou Intel), o processamento fica mais rápido.</dd></div>
-      <div><dt>Espaço em disco</dt><dd>Cerca de 6 GB para os modelos, mais o espaço das reuniões.</dd></div>
-      <div><dt>Internet</dt><dd>Só para baixar o programa, os modelos e as atualizações.</dd></div>
-      <div><dt>Privacidade</dt><dd>Sem conta e sem telemetria. Áudio, transcrição e resumo ficam neste computador.</dd></div>
-    </dl>
-  </section>
-
-  <section class="wrap" aria-labelledby="sobre">
-    <p class="eyebrow">Sobre o projeto</p>
-    <h2 id="sobre">Feito sem fins lucrativos, para ajudar as pessoas.</h2>
-    <p class="about">O IntegraMeet é open source sob a licença MIT. O código é público: você pode usar, estudar e melhorar. Não tem plano pago nem anúncio.</p>
-    <p class="about"><strong>Criado por willian_sdm.</strong> Acompanhe em <a href="https://www.instagram.com/willian_sdm/">instagram.com/willian_sdm</a> ou veja o código no <a href="https://github.com/willianomiguel/IntegraMeet">GitHub</a>.</p>
-    <p class="cta-row"><a class="btn" href="https://github.com/willianomiguel/IntegraMeet/releases/latest/download/IntegraMeet-Setup.exe">Baixar para Windows</a></p>
-  </section>
 
   <footer>
     <div class="wrap">
-      <span>IntegraMeet · Licença MIT</span>
-      <span><a href="https://github.com/willianomiguel/IntegraMeet/issues">Relatar um problema</a> · <a href="https://github.com/willianomiguel/IntegraMeet#readme">Leia o README</a></span>
+      <span>IntegraMeet · Licença MIT · Feito sem fins lucrativos</span>
+      <span><a href="https://github.com/willianomiguel/IntegraMeet/issues">Relatar um problema</a> · <a href="https://github.com/willianomiguel/IntegraMeet#readme">Documentação</a></span>
     </div>
   </footer>
 </body>
