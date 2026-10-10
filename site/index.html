@@ -7,35 +7,43 @@
   <meta name="description" content="Grave, transcreva e organize suas reuniões com IA que roda no seu computador. Gratuito, código aberto e sem envio de dados." />
   <link rel="preconnect" href="https://fonts.googleapis.com" />
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
-  <link href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,500;9..144,650&family=Instrument+Sans:wght@400;500;600&display=swap" rel="stylesheet" />
+  <link href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,500;9..144,650&family=Instrument+Sans:wght@400;500;600&family=JetBrains+Mono:wght@500&display=swap" rel="stylesheet" />
   <style>
-    /* Cores com leve tom quente, nunca cinza puro. Modo escuro segue o sistema. */
+    /* Tons quentes e levemente terrosos, sem branco puro e sem cinza puro.
+       O laranja é próximo ao do Claude Code. */
     :root {
       color-scheme: light;
-      --paper: #f5f1e8;
-      --paper-2: #ece6d8;
-      --ink: #1f2a24;
-      --ink-soft: #4d5a52;
-      --line: #d6cdb8;
-      --accent: #0d6a5a;
-      --accent-ink: #f5f1e8;
-      --flag: #f2d98a;
-      --flag-ink: #3d3210;
+      --paper: #efe7d8;
+      --paper-raised: #f6f0e3;
+      --panel: #e7dcc7;
+      --ink: #2a2118;
+      --ink-soft: #6b5d4c;
+      --line: #d4c6ad;
+      --accent: #c4552b;
+      --accent-strong: #a9441f;
+      --accent-tint: #f3d9c6;
+      --on-accent: #fff8ef;
+      --flag: #f5dcc4;
+      --flag-ink: #6e3418;
       --display: "Fraunces", "Iowan Old Style", Georgia, serif;
       --text: "Instrument Sans", "Helvetica Neue", Arial, sans-serif;
+      --mono: "JetBrains Mono", ui-monospace, Consolas, monospace;
     }
     @media (prefers-color-scheme: dark) {
       :root:not([data-theme="light"]) {
         color-scheme: dark;
-        --paper: #14191a;
-        --paper-2: #1c2324;
-        --ink: #ece7da;
-        --ink-soft: #b3ad9d;
-        --line: #33403f;
-        --accent: #5fc2ae;
-        --accent-ink: #10201c;
-        --flag: #5a4a16;
-        --flag-ink: #f6e7b0;
+        --paper: #211b15;
+        --paper-raised: #2a231b;
+        --panel: #322a20;
+        --ink: #f1e7d6;
+        --ink-soft: #bfb19b;
+        --line: #4a3f32;
+        --accent: #e0703f;
+        --accent-strong: #f08a5c;
+        --accent-tint: #4a2c1d;
+        --on-accent: #1d140e;
+        --flag: #4a3220;
+        --flag-ink: #f7d9bd;
       }
     }
 
@@ -49,114 +57,166 @@
       font-size: 1.0625rem;
       line-height: 1.6;
     }
-    a { color: var(--accent); text-underline-offset: 3px; }
+    a { color: var(--accent-strong); text-underline-offset: 3px; }
     a:focus-visible, .btn:focus-visible {
       outline: 3px solid var(--accent);
       outline-offset: 3px;
-      border-radius: 4px;
+      border-radius: 6px;
     }
-    .wrap { width: 100%; max-width: 1080px; margin: 0 auto; padding: 0 1.25rem; }
-    h1, h2, h3 { font-family: var(--display); font-weight: 600; letter-spacing: -0.015em; line-height: 1.15; margin: 0; }
+    .wrap { width: 100%; max-width: 1120px; margin: 0 auto; padding: 0 1.25rem; }
+    h1, h2, h3 { font-family: var(--display); font-weight: 600; letter-spacing: -0.015em; line-height: 1.12; margin: 0; }
     p { margin: 0; }
-    .eyebrow { font-size: 0.8125rem; font-weight: 600; letter-spacing: 0.12em; text-transform: uppercase; color: var(--ink-soft); }
+    .eyebrow { font-size: 0.8125rem; font-weight: 600; letter-spacing: 0.12em; text-transform: uppercase; color: var(--accent-strong); }
 
     /* Cabeçalho */
     .top { display: flex; align-items: center; justify-content: space-between; padding: 1.5rem 0; }
-    .brand { font-family: var(--display); font-weight: 650; font-size: 1.25rem; color: var(--ink); text-decoration: none; }
+    .brand { display: inline-flex; align-items: center; gap: 0.6rem; font-family: var(--display); font-weight: 650; font-size: 1.25rem; color: var(--ink); text-decoration: none; }
+    .brand-mark { width: 1.6rem; height: 1.6rem; border-radius: 8px; background: var(--accent); display: flex; align-items: center; justify-content: center; gap: 2px; }
+    .brand-mark i { display: block; width: 3px; border-radius: 2px; background: var(--on-accent); }
     .top nav a { color: var(--ink-soft); text-decoration: none; font-size: 0.9375rem; margin-left: 1.5rem; }
     .top nav a:hover { color: var(--ink); text-decoration: underline; }
 
     /* Botão principal */
     .btn {
-      display: inline-flex; align-items: center; gap: 0.6rem;
-      background: var(--accent); color: var(--accent-ink);
+      display: inline-flex; align-items: center; justify-content: center; gap: 0.6rem;
+      background: var(--accent); color: var(--on-accent);
       text-decoration: none; font-weight: 600; font-size: 1.0625rem;
-      padding: 0.95rem 1.5rem; border-radius: 999px;
+      padding: 0.95rem 1.6rem; border-radius: 12px;
+      box-shadow: 0 1px 0 rgba(255,255,255,.25) inset, 0 6px 18px -8px var(--accent);
     }
-    .btn:hover { filter: brightness(1.08); }
-    .btn-note { font-size: 0.9375rem; color: var(--ink-soft); margin-top: 0.85rem; }
+    .btn:hover { background: var(--accent-strong); }
+    .btn-note { font-size: 0.9375rem; color: var(--ink-soft); margin-top: 0.9rem; max-width: 26rem; }
 
     /* Herói */
-    .hero { display: grid; gap: 3rem; padding: 3.5rem 0 5rem; align-items: center; }
-    .hero h1 { font-size: clamp(2.5rem, 6vw, 4.25rem); margin: 0.75rem 0 1.25rem; }
+    .hero { display: grid; gap: 3.5rem; padding: 3.5rem 0 5.5rem; align-items: center; }
+    .hero h1 { font-size: clamp(2.6rem, 6vw, 4.4rem); margin: 0.85rem 0 1.35rem; }
     .lead { font-size: 1.25rem; color: var(--ink-soft); max-width: 34rem; }
-    .hero-actions { margin-top: 2rem; }
+    .hero-actions { margin-top: 2.25rem; }
 
-    /* Demonstração do app (mock simples, feito em HTML) */
-    .demo {
-      background: var(--paper-2);
+    /* Janela de demonstração */
+    .window {
+      margin: 0;
+      background: var(--paper-raised);
       border: 1px solid var(--line);
-      border-radius: 14px;
-      padding: 1.25rem 1.25rem 1.5rem;
-      font-size: 0.9375rem;
+      border-radius: 18px;
+      box-shadow: 0 30px 60px -32px rgba(60, 35, 15, .45), 0 2px 6px rgba(60, 35, 15, .08);
+      overflow: hidden;
     }
-    .demo-head { display: flex; justify-content: space-between; align-items: baseline; border-bottom: 1px solid var(--line); padding-bottom: 0.75rem; margin-bottom: 0.9rem; }
-    .demo-head strong { font-family: var(--display); font-size: 1.1875rem; font-weight: 600; }
-    .demo-head span { color: var(--ink-soft); font-size: 0.8125rem; }
-    .row { display: grid; grid-template-columns: 3.4rem 1fr; gap: 0.75rem; padding: 0.4rem 0.5rem; border-radius: 6px; }
-    .row time { font-variant-numeric: tabular-nums; color: var(--ink-soft); font-size: 0.8125rem; padding-top: 0.15rem; }
-    .row.flag { background: var(--flag); color: var(--flag-ink); }
-    .tag { display: inline-block; font-size: 0.75rem; font-weight: 600; text-transform: uppercase; letter-spacing: 0.06em; margin-bottom: 0.15rem; }
-    .muted-row { color: var(--ink-soft); font-style: italic; }
-    .demo-foot { margin-top: 0.9rem; border-top: 1px solid var(--line); padding-top: 0.75rem; font-size: 0.8125rem; color: var(--ink-soft); }
+    .window-bar {
+      display: flex; align-items: center; gap: 0.5rem;
+      padding: 0.8rem 1rem;
+      background: var(--panel);
+      border-bottom: 1px solid var(--line);
+      font-size: 0.8125rem; color: var(--ink-soft);
+    }
+    .window-bar .dot { width: 0.6rem; height: 0.6rem; border-radius: 50%; background: var(--line); }
+    .window-bar .title { margin-left: auto; margin-right: auto; font-weight: 500; color: var(--ink); }
+    .window-body { padding: 1.4rem 1.4rem 1.2rem; }
+    .meeting-head { display: flex; align-items: flex-start; justify-content: space-between; gap: 1rem; margin-bottom: 1.1rem; }
+    .meeting-head h3 { font-size: 1.35rem; }
+    .meeting-head p { color: var(--ink-soft); font-size: 0.875rem; margin-top: 0.2rem; }
+    .chip {
+      display: inline-flex; align-items: center; gap: 0.4rem;
+      font-size: 0.78rem; font-weight: 600; border-radius: 999px;
+      padding: 0.25rem 0.65rem; white-space: nowrap;
+      background: var(--accent-tint); color: var(--flag-ink);
+    }
+    .chip.ok { background: #d9e8d2; color: #2c4a24; }
+    @media (prefers-color-scheme: dark) {
+      :root:not([data-theme="light"]) .chip.ok { background: #2b3e2a; color: #cfe7c6; }
+    }
+    .segments { list-style: none; margin: 0; padding: 0; display: grid; gap: 0.25rem; }
+    .seg {
+      display: grid; grid-template-columns: 3.6rem 1fr; gap: 0.9rem;
+      padding: 0.7rem 0.75rem; border-radius: 10px;
+    }
+    .seg time { font-family: var(--mono); font-size: 0.8rem; color: var(--ink-soft); padding-top: 0.2rem; }
+    .seg .who { display: block; font-size: 0.78rem; color: var(--ink-soft); margin-bottom: 0.15rem; font-weight: 500; }
+    .seg p { font-size: 0.975rem; }
+    .seg.marked { background: var(--accent-tint); }
+    .seg.marked .label { display: inline-block; font-size: 0.72rem; font-weight: 700; letter-spacing: 0.06em; text-transform: uppercase; color: var(--flag-ink); margin-bottom: 0.2rem; }
+    .seg.noise p { color: var(--ink-soft); font-style: italic; }
+    .seg.playing { box-shadow: inset 0 0 0 1.5px var(--accent); }
+    .window-foot {
+      display: flex; align-items: center; justify-content: space-between; gap: 1rem;
+      border-top: 1px solid var(--line); padding: 0.95rem 1.4rem;
+      font-size: 0.85rem; color: var(--ink-soft);
+      background: var(--paper);
+    }
+    .window-foot strong { color: var(--ink); font-weight: 600; }
 
     /* Seções */
-    section { padding: 4.5rem 0; border-top: 1px solid var(--line); }
-    section h2 { font-size: clamp(1.9rem, 4vw, 2.6rem); max-width: 22ch; }
+    section { padding: 5rem 0; border-top: 1px solid var(--line); }
+    section h2 { font-size: clamp(2rem, 4vw, 2.75rem); max-width: 22ch; }
     .intro { color: var(--ink-soft); max-width: 40rem; margin-top: 1rem; }
 
-    /* Lista de recursos: sem cards, separada por linhas */
-    .features { margin-top: 2.5rem; list-style: none; padding: 0; display: grid; gap: 0; }
-    .features li { display: grid; grid-template-columns: 2.5rem 1fr; gap: 1rem; padding: 1.5rem 0; border-top: 1px solid var(--line); }
+    /* Recursos: lista editorial */
+    .features { margin-top: 2.75rem; list-style: none; padding: 0; display: grid; }
+    .features li { display: grid; grid-template-columns: 3rem 1fr; gap: 1rem; padding: 1.6rem 0; border-top: 1px solid var(--line); }
     .features li:last-child { border-bottom: 1px solid var(--line); }
-    .num { font-family: var(--display); color: var(--accent); font-size: 1.1rem; font-weight: 600; padding-top: 0.15rem; }
-    .features h3 { font-size: 1.3rem; margin-bottom: 0.35rem; }
-    .features p { color: var(--ink-soft); max-width: 36rem; }
+    .num { font-family: var(--display); color: var(--accent-strong); font-size: 1.1rem; font-weight: 600; padding-top: 0.2rem; }
+    .features h3 { font-size: 1.35rem; margin-bottom: 0.4rem; }
+    .features p { color: var(--ink-soft); max-width: 38rem; }
 
     /* Passos */
-    .steps { margin-top: 2.5rem; padding: 0; list-style: none; counter-reset: passo; display: grid; gap: 1.25rem; }
-    .steps li { counter-increment: passo; display: grid; grid-template-columns: 2.5rem 1fr; gap: 1rem; }
-    .steps li::before { content: counter(passo); font-family: var(--display); font-size: 1.1rem; font-weight: 600; color: var(--accent); }
-    .steps strong { display: block; font-weight: 600; }
+    .steps { margin: 2.75rem 0 0; padding: 0; list-style: none; counter-reset: passo; display: grid; gap: 1.4rem; }
+    .steps li { counter-increment: passo; display: grid; grid-template-columns: 3rem 1fr; gap: 1rem; align-items: start; }
+    .steps li::before {
+      content: counter(passo);
+      width: 2.25rem; height: 2.25rem; border-radius: 50%;
+      display: grid; place-items: center;
+      background: var(--accent-tint); color: var(--flag-ink);
+      font-family: var(--display); font-weight: 600;
+    }
+    .steps strong { display: block; font-weight: 600; font-size: 1.075rem; }
     .steps span { color: var(--ink-soft); }
 
     /* Requisitos */
-    .specs { margin: 2.5rem 0 0; display: grid; gap: 0; }
-    .specs div { display: grid; gap: 0.25rem; padding: 1rem 0; border-top: 1px solid var(--line); }
+    .specs { margin: 2.75rem 0 0; display: grid; gap: 0; }
+    .specs div { display: grid; gap: 0.25rem; padding: 1.1rem 0; border-top: 1px solid var(--line); }
     .specs div:last-child { border-bottom: 1px solid var(--line); }
     .specs dt { font-weight: 600; }
     .specs dd { margin: 0; color: var(--ink-soft); }
 
-    /* Aviso de instalação */
-    .warn { background: var(--flag); color: var(--flag-ink); border-radius: 12px; padding: 1.25rem 1.5rem; margin-top: 2rem; max-width: 46rem; }
-    .warn p + p { margin-top: 0.5rem; }
+    /* Aviso do Windows */
+    .warn {
+      background: var(--flag); color: var(--flag-ink);
+      border-radius: 16px; padding: 1.4rem 1.6rem; margin-top: 2.5rem; max-width: 48rem;
+    }
+    .warn p + p { margin-top: 0.55rem; }
+    .warn a { color: var(--flag-ink); }
 
     /* Sobre */
-    .about { max-width: 42rem; margin-top: 1.25rem; color: var(--ink-soft); }
+    .about { max-width: 42rem; margin-top: 1.25rem; color: var(--ink-soft); font-size: 1.1rem; }
     .about strong { color: var(--ink); }
+    .cta-row { margin-top: 2.75rem; }
 
     footer { border-top: 1px solid var(--line); padding: 2rem 0 3rem; color: var(--ink-soft); font-size: 0.9375rem; }
     footer .wrap { display: flex; flex-wrap: wrap; gap: 0.5rem 1.5rem; justify-content: space-between; }
     footer a { color: var(--ink-soft); }
 
-    /* Telas médias e largas */
-    @media (min-width: 900px) {
-      .hero { grid-template-columns: 1.05fr 0.95fr; }
+    @media (min-width: 960px) {
+      .hero { grid-template-columns: 1fr 1fr; }
       .specs { grid-template-columns: repeat(2, 1fr); column-gap: 3rem; }
-      .specs div { border-bottom: 0; }
-      .specs div:nth-last-child(-n+2) { border-bottom: 1px solid var(--line); }
+      .specs div:nth-last-child(2) { border-bottom: 1px solid var(--line); }
+      .specs div:nth-last-child(1) { border-bottom: 0; }
     }
     @media (max-width: 560px) {
       .top nav a { margin-left: 1rem; }
       .hero { padding-top: 2.25rem; }
-      .btn { width: 100%; justify-content: center; }
+      .btn { width: 100%; }
+      .window-foot { flex-direction: column; align-items: flex-start; }
+      .meeting-head { flex-direction: column; }
     }
   </style>
 </head>
 <body>
   <div class="wrap">
     <header class="top">
-      <a class="brand" href="#">IntegraMeet</a>
+      <a class="brand" href="#">
+        <span class="brand-mark" aria-hidden="true"><i style="height:0.6rem"></i><i style="height:0.95rem"></i><i style="height:0.6rem"></i></span>
+        IntegraMeet
+      </a>
       <nav aria-label="Principal">
         <a href="#como-funciona">Como funciona</a>
         <a href="#requisitos">Requisitos</a>
@@ -175,21 +235,50 @@
           <a class="btn" href="https://github.com/willianomiguel/IntegraMeet/releases/latest/download/IntegraMeet-Setup.exe">
             Baixar para Windows
           </a>
-          <p class="btn-note">Windows 10 ou 11, 64 bits. Instalador de cerca de 20 MB; os modelos de IA são baixados depois, uma vez.</p>
+          <p class="btn-note">Windows 10 ou 11, 64 bits. O instalador tem cerca de 20 MB. Os modelos de IA são baixados depois, uma vez.</p>
         </div>
       </div>
 
-      <figure class="demo" aria-label="Exemplo de transcrição no IntegraMeet">
-        <div class="demo-head">
-          <strong>Planejamento de equipe</strong>
-          <span>12 min · análise pronta</span>
+      <figure class="window" aria-label="Exemplo de reunião no IntegraMeet">
+        <div class="window-bar">
+          <span class="dot"></span><span class="dot"></span><span class="dot"></span>
+          <span class="title">IntegraMeet</span>
         </div>
-        <div class="row"><time>00:00</time><div>Bom dia pessoal, vamos começar a reunião de planejamento.</div></div>
-        <div class="row flag"><time>00:05</time><div><span class="tag">Decisão</span><br />Contratar a Ana até sexta-feira para a equipe de vendas.</div></div>
-        <div class="row flag"><time>00:11</time><div><span class="tag">Tarefa · Maria · quinta-feira</span><br />Revisar o contrato do fornecedor.</div></div>
-        <div class="row flag"><time>00:19</time><div><span class="tag">Risco</span><br />O fornecedor ainda não confirmou a data de entrega.</div></div>
-        <div class="row muted-row"><time>00:26</time><div>[barulho de porta]: oculto pelo filtro</div></div>
-        <p class="demo-foot">Cada item leva ao trecho de origem. Clique e o áudio começa dali.</p>
+        <div class="window-body">
+          <div class="meeting-head">
+            <div>
+              <h3>Planejamento de equipe</h3>
+              <p>Hoje, 10:00 · 12 min</p>
+            </div>
+            <span class="chip ok">Análise pronta</span>
+          </div>
+          <ol class="segments">
+            <li class="seg">
+              <time>00:00</time>
+              <div><span class="who">Microfone</span><p>Bom dia, pessoal. Vamos começar o planejamento.</p></div>
+            </li>
+            <li class="seg marked playing">
+              <time>00:05</time>
+              <div><span class="label">Decisão</span><p>Vamos contratar a Ana até sexta-feira para a equipe de vendas.</p></div>
+            </li>
+            <li class="seg marked">
+              <time>00:11</time>
+              <div><span class="label">Tarefa · Maria · quinta-feira</span><p>Revisar o contrato do fornecedor.</p></div>
+            </li>
+            <li class="seg marked">
+              <time>00:19</time>
+              <div><span class="label">Risco</span><p>O fornecedor ainda não confirmou a data de entrega.</p></div>
+            </li>
+            <li class="seg noise">
+              <time>00:26</time>
+              <div><span class="who">Som de ambiente</span><p>[barulho de porta]</p></div>
+            </li>
+          </ol>
+        </div>
+        <div class="window-foot">
+          <span>Clique em um trecho para ouvir a partir dele.</span>
+          <strong>Copiar transcrição</strong>
+        </div>
       </figure>
     </div>
   </main>
@@ -270,9 +359,9 @@
   <section class="wrap" aria-labelledby="sobre">
     <p class="eyebrow">Sobre o projeto</p>
     <h2 id="sobre">Feito sem fins lucrativos, para ajudar as pessoas.</h2>
-    <p class="about">O IntegraMeet é open source sob a licença MIT. O código é público: você pode usar, estudar e melhorar. Ele não tem plano pago nem anúncio.</p>
+    <p class="about">O IntegraMeet é open source sob a licença MIT. O código é público: você pode usar, estudar e melhorar. Não tem plano pago nem anúncio.</p>
     <p class="about"><strong>Criado por willian_sdm.</strong> Acompanhe em <a href="https://www.instagram.com/willian_sdm/">instagram.com/willian_sdm</a> ou veja o código no <a href="https://github.com/willianomiguel/IntegraMeet">GitHub</a>.</p>
-    <p style="margin-top: 2.5rem;"><a class="btn" href="https://github.com/willianomiguel/IntegraMeet/releases/latest/download/IntegraMeet-Setup.exe">Baixar para Windows</a></p>
+    <p class="cta-row"><a class="btn" href="https://github.com/willianomiguel/IntegraMeet/releases/latest/download/IntegraMeet-Setup.exe">Baixar para Windows</a></p>
   </section>
 
   <footer>
