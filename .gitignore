@@ -1,0 +1,19 @@
+# Dependências e builds
+node_modules/
+dist/
+release/
+src-tauri/target/
+src-tauri/gen/
+
+# Downloads temporários dos binários (os extraídos já estão em resources/runtime)
+scripts/downloads/
+
+# Configuração local do Claude e dados de teste
+.claude/
+*.log
+
+# Editores e sistema
+.vscode/
+.idea/
+Thumbs.db
+.DS_Store

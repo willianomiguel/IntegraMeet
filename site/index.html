@@ -1,0 +1,172 @@
+<!doctype html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>IntegraMeet — Assistente privado para reuniões</title>
+  <meta name="description" content="Grave, transcreva e organize suas reuniões com IA que roda no seu computador. Gratuito, de código aberto e sem envio de dados." />
+  <style>
+    :root {
+      color-scheme: light;
+      --bg: #f5f7fb;
+      --surface: #ffffff;
+      --text: #0f172a;
+      --muted: #55627a;
+      --accent: #2563eb;
+      --accent-strong: #1d4ed8;
+    }
+    @media (prefers-color-scheme: dark) {
+      :root:not([data-theme="light"]) {
+        color-scheme: dark;
+        --bg: #0b1120;
+        --surface: #111a2e;
+        --text: #e2e8f0;
+        --muted: #94a3b8;
+        --accent: #3b82f6;
+        --accent-strong: #60a5fa;
+      }
+    }
+    * { box-sizing: border-box; }
+    body {
+      margin: 0;
+      background: var(--bg);
+      color: var(--text);
+      font-family: "Segoe UI", system-ui, -apple-system, Roboto, sans-serif;
+      line-height: 1.6;
+    }
+    a { color: var(--accent); }
+    .wrap { max-width: 960px; margin: 0 auto; padding: 0 20px; }
+    header.top { padding: 22px 0; }
+    .brand { font-weight: 700; font-size: 1.1rem; letter-spacing: -0.01em; }
+    .hero { padding: 40px 0 56px; text-align: center; }
+    .hero h1 { font-size: clamp(2rem, 5vw, 3.2rem); line-height: 1.1; margin: 0 0 16px; letter-spacing: -0.02em; }
+    .hero p.lead { font-size: 1.15rem; color: var(--muted); max-width: 640px; margin: 0 auto 28px; }
+    .btn {
+      display: inline-block;
+      background: var(--accent);
+      color: #fff;
+      text-decoration: none;
+      font-weight: 600;
+      padding: 14px 28px;
+      border-radius: 12px;
+      font-size: 1.05rem;
+    }
+    .btn:hover, .btn:focus-visible { background: var(--accent-strong); outline: 3px solid color-mix(in srgb, var(--accent) 35%, transparent); outline-offset: 3px; }
+    .meta { margin-top: 14px; font-size: 0.9rem; color: var(--muted); }
+    section { padding: 36px 0; }
+    section h2 { font-size: 1.5rem; margin: 0 0 16px; letter-spacing: -0.01em; }
+    .grid { display: grid; gap: 16px; grid-template-columns: repeat(auto-fit, minmax(230px, 1fr)); }
+    .card { background: var(--surface); border-radius: 16px; padding: 20px; box-shadow: 0 1px 2px rgba(0,0,0,.05); }
+    .card h3 { margin: 0 0 6px; font-size: 1.05rem; }
+    .card p { margin: 0; color: var(--muted); font-size: 0.95rem; }
+    ol.steps { padding-left: 20px; margin: 0; }
+    ol.steps li { margin-bottom: 10px; color: var(--muted); }
+    ol.steps li strong { color: var(--text); }
+    table { width: 100%; border-collapse: collapse; background: var(--surface); border-radius: 12px; overflow: hidden; font-size: 0.95rem; }
+    th, td { text-align: left; padding: 12px 16px; border-bottom: 1px solid rgba(127,127,127,.15); vertical-align: top; }
+    th { color: var(--muted); font-weight: 600; width: 32%; }
+    .notice { background: color-mix(in srgb, #f59e0b 14%, var(--surface)); border-radius: 12px; padding: 16px 18px; font-size: 0.95rem; }
+    footer { padding: 32px 0 48px; color: var(--muted); font-size: 0.9rem; border-top: 1px solid rgba(127,127,127,.15); }
+    footer a { color: inherit; }
+    @media (max-width: 560px) {
+      th { width: 40%; }
+    }
+  </style>
+</head>
+<body>
+  <header class="top">
+    <div class="wrap">
+      <span class="brand">IntegraMeet</span>
+    </div>
+  </header>
+
+  <main>
+    <div class="wrap hero">
+      <h1>Suas reuniões, transcritas e organizadas — no seu computador.</h1>
+      <p class="lead">
+        O IntegraMeet grava suas reuniões, transcreve o que foi dito e destaca decisões, tarefas e prazos.
+        Tudo roda localmente: nada é enviado para a internet.
+      </p>
+      <a class="btn" href="https://github.com/willianomiguel/IntegraMeet/releases/latest/download/IntegraMeet-Setup.exe">
+        Baixar para Windows
+      </a>
+      <p class="meta">Windows 10 ou 11 (64 bits) · Gratuito e de código aberto · Versão mais recente</p>
+    </div>
+
+    <section class="wrap" aria-labelledby="o-que-faz">
+      <h2 id="o-que-faz">O que ele faz</h2>
+      <div class="grid">
+        <div class="card"><h3>Grava</h3><p>Microfone e, se quiser, o áudio do computador, com a voz das outras pessoas.</p></div>
+        <div class="card"><h3>Transcreve</h3><p>Texto com o tempo de cada trecho. Você ouve o áudio a partir de qualquer frase.</p></div>
+        <div class="card"><h3>Organiza</h3><p>Resumo, decisões, tarefas, responsáveis, prazos e riscos, sempre ligados ao trecho de origem.</p></div>
+        <div class="card"><h3>Pesquisa</h3><p>Encontre uma reunião pelo título ou por qualquer coisa que foi dita nela.</p></div>
+        <div class="card"><h3>Filtra ruído</h3><p>Oculta marcações de barulho, música e risos quando você quiser, e copia a transcrição com um clique.</p></div>
+        <div class="card"><h3>Funciona offline</h3><p>Depois de configurado, não precisa de internet para gravar, transcrever ou analisar.</p></div>
+      </div>
+    </section>
+
+    <section class="wrap" aria-labelledby="como-funciona">
+      <h2 id="como-funciona">Como funciona</h2>
+      <ol class="steps">
+        <li><strong>Baixe e instale</strong> o arquivo <code>IntegraMeet-Setup.exe</code>.</li>
+        <li><strong>Abra o programa.</strong> A configuração inicial explica tudo em português.</li>
+        <li><strong>Deixe o app verificar o computador.</strong> Ele escolhe sozinho o melhor desempenho para a sua máquina.</li>
+        <li><strong>Aguarde os modelos.</strong> Eles são baixados uma vez e ficam salvos no seu computador.</li>
+        <li><strong>Teste o áudio</strong> em um teste rápido de 5 segundos.</li>
+        <li><strong>Clique em Nova reunião,</strong> grave e finalize. A transcrição e a análise começam sozinhas.</li>
+      </ol>
+    </section>
+
+    <section class="wrap" aria-labelledby="requisitos">
+      <h2 id="requisitos">Requisitos</h2>
+      <table>
+        <tbody>
+          <tr><th scope="row">Sistema</th><td>Windows 10 (versão 2004) ou Windows 11, 64 bits</td></tr>
+          <tr><th scope="row">Memória RAM</th><td>8 GB no mínimo; 16 GB recomendados</td></tr>
+          <tr><th scope="row">Placa de vídeo</th><td>Opcional. Com placa compatível com Vulkan (NVIDIA, AMD ou Intel) fica mais rápido.</td></tr>
+          <tr><th scope="row">Espaço em disco</th><td>Cerca de 6 GB para os modelos, mais o espaço das reuniões</td></tr>
+          <tr><th scope="row">Internet</th><td>Só para baixar o programa, os modelos e as atualizações</td></tr>
+        </tbody>
+      </table>
+    </section>
+
+    <section class="wrap" aria-labelledby="privacidade">
+      <h2 id="privacidade">Privacidade</h2>
+      <p style="color: var(--muted); margin: 0 0 14px;">
+        Suas reuniões permanecem neste computador. Não há conta, cadastro nem telemetria, e o áudio, a transcrição e o resumo
+        nunca saem da sua máquina.
+      </p>
+    </section>
+
+    <section class="wrap" aria-labelledby="aviso">
+      <h2 id="aviso">Antes de instalar</h2>
+      <div class="notice">
+        O instalador ainda não tem assinatura digital. Por isso o Windows pode mostrar “O Windows protegeu o computador”.
+        Para continuar, clique em <strong>Mais informações</strong> e depois em <strong>Executar assim mesmo</strong>.
+        Você pode conferir a integridade do arquivo pelo <code>SHA256SUMS.txt</code> disponível na
+        <a href="https://github.com/willianomiguel/IntegraMeet/releases/latest">página de releases</a>.
+      </div>
+    </section>
+
+    <section class="wrap" aria-labelledby="sobre">
+      <h2 id="sobre">Sobre o projeto</h2>
+      <p style="color: var(--muted); margin: 0 0 12px;">
+        O IntegraMeet é um projeto de código aberto, sem fins lucrativos, feito para ajudar as pessoas a usar IA de forma privada.
+        O código está publicamente disponível e pode ser usado, estudado e melhorado por qualquer pessoa, sob a licença MIT.
+      </p>
+      <p style="color: var(--muted); margin: 0;">
+        Criado por <strong style="color: var(--text);">willian_sdm</strong> ·
+        <a href="https://www.instagram.com/willian_sdm/">instagram.com/willian_sdm</a> ·
+        <a href="https://github.com/willianomiguel/IntegraMeet">código no GitHub</a>
+      </p>
+    </section>
+  </main>
+
+  <footer>
+    <div class="wrap">
+      IntegraMeet · Código aberto (MIT) · <a href="https://github.com/willianomiguel/IntegraMeet#licença">Licença</a> ·
+      <a href="https://github.com/willianomiguel/IntegraMeet/issues">Relatar um problema</a>
+    </div>
+  </footer>
+</body>
+</html>
