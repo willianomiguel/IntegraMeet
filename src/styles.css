@@ -1,41 +1,118 @@
+@import "./fonts.css";
+
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
 
+/* Mesma identidade da página: creme neutro, azul-índigo e as mesmas fontes. */
 :root {
   color-scheme: light;
-  --bg: #f5f7fb;
+  --bg: #f6f4ef;
   --surface: #ffffff;
-  --text: #0f172a;
-  --muted: #64748b;
-  --accent: #2563eb;
+  --panel: #eeebe3;
+  --text: #1c1d22;
+  --muted: #55575f;
+  --line: #dcd8cf;
+  --accent: #2c4fd1;
+  --accent-strong: #1f3ba8;
+  --accent-tint: #e4eafc;
+  --on-accent: #ffffff;
+  --ok: #22553a;
+  --ok-tint: #e3f1e8;
+  --warn-tint: #f7ecd0;
+  --warn-ink: #6b4b0b;
+  --danger: #b42318;
+  --shadow: 0 1px 2px rgba(28, 29, 34, 0.06), 0 12px 32px -18px rgba(28, 29, 34, 0.25);
+  --display: "Fraunces", "Iowan Old Style", Georgia, serif;
+  --text-font: "Instrument Sans", "Segoe UI", system-ui, sans-serif;
 }
 
 @media (prefers-color-scheme: dark) {
   :root:not([data-theme="light"]) {
     color-scheme: dark;
-    --bg: #0b1120;
-    --surface: #111a2e;
-    --text: #e2e8f0;
-    --muted: #94a3b8;
-    --accent: #3b82f6;
+    --bg: #141518;
+    --surface: #1c1d22;
+    --panel: #202127;
+    --text: #eceef3;
+    --muted: #a7abb6;
+    --line: #2e3038;
+    --accent: #7b96ff;
+    --accent-strong: #a6b8ff;
+    --accent-tint: #242c4d;
+    --on-accent: #101425;
+    --ok: #bfe6cd;
+    --ok-tint: #1d3327;
+    --warn-tint: #3a3015;
+    --warn-ink: #f2dca0;
+    --danger: #ff8a80;
+    --shadow: 0 1px 2px rgba(0, 0, 0, 0.4), 0 12px 32px -18px rgba(0, 0, 0, 0.6);
   }
 }
 
 :root[data-theme="dark"] {
   color-scheme: dark;
-  --bg: #0b1120;
-  --surface: #111a2e;
-  --text: #e2e8f0;
-  --muted: #94a3b8;
-  --accent: #3b82f6;
+  --bg: #141518;
+  --surface: #1c1d22;
+  --panel: #202127;
+  --text: #eceef3;
+  --muted: #a7abb6;
+  --line: #2e3038;
+  --accent: #7b96ff;
+  --accent-strong: #a6b8ff;
+  --accent-tint: #242c4d;
+  --on-accent: #101425;
+  --ok: #bfe6cd;
+  --ok-tint: #1d3327;
+  --warn-tint: #3a3015;
+  --warn-ink: #f2dca0;
+  --danger: #ff8a80;
+}
+
+html {
+  -webkit-text-size-adjust: 100%;
 }
 
 body {
   margin: 0;
   background: var(--bg);
   color: var(--text);
-  font-family: "Segoe UI Variable", "Segoe UI", system-ui, sans-serif;
+  font-family: var(--text-font);
+  font-size: 15px;
+  line-height: 1.6;
   -webkit-font-smoothing: antialiased;
-  user-select: none;
+  /* Texto selecionável: a pessoa precisa conseguir copiar trechos da transcrição. */
+  user-select: text;
+}
+
+h1,
+h2,
+h3 {
+  font-family: var(--display);
+  font-weight: 600;
+  letter-spacing: -0.015em;
+  line-height: 1.15;
+}
+
+a {
+  color: var(--accent-strong);
+  text-underline-offset: 3px;
+}
+
+:focus-visible {
+  outline: 3px solid var(--accent);
+  outline-offset: 2px;
+  border-radius: 6px;
+}
+
+/* Campos de texto e áudio seguem o mesmo visual dos blocos. */
+input[type="text"],
+input[type="search"],
+select,
+textarea {
+  font-family: var(--text-font);
+}
+
+::selection {
+  background: var(--accent-tint);
+  color: var(--text);
 }

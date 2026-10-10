@@ -21,7 +21,8 @@ process.env.PATH = `${cargoBin}${process.platform === "win32" ? ";" : ":"}${proc
 console.log(`> Gerando build ${pkg.version} (${process.env.LMAI_BUILD_DATE})`);
 execSync("npx tauri build", { cwd: root, stdio: "inherit", env: process.env });
 
-const built = readdirSync(bundleDir).find((f) => f.endsWith("-setup.exe"));
+// Escolhe o instalador da versão atual (a pasta do bundle pode ter builds antigos).
+const built = readdirSync(bundleDir).find((f) => f.startsWith(`IntegraMeet_${pkg.version}_`) && f.endsWith("-setup.exe"));
 if (!built) throw new Error(`Instalador não encontrado em ${bundleDir}`);
 
 rmSync(releaseDir, { recursive: true, force: true });

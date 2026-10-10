@@ -76,15 +76,26 @@ export default function App() {
 
   return (
     <div className="flex min-h-screen">
-      <aside className="flex w-56 shrink-0 flex-col gap-1 border-r border-black/5 bg-[var(--surface)] p-4 dark:border-white/5">
-        <p className="mb-5 px-2 text-base font-semibold tracking-tight">IntegraMeet</p>
+      <aside className="flex w-60 shrink-0 flex-col gap-1 border-r border-[var(--line)] bg-[var(--surface)] p-5">
+        <div className="mb-6 flex items-center gap-2.5 px-1">
+          <span className="flex h-8 w-8 items-center justify-center gap-[2px] rounded-lg bg-[var(--accent)]" aria-hidden="true">
+            <i className="block h-[10px] w-[3px] rounded-sm bg-[var(--on-accent)]" />
+            <i className="block h-[15px] w-[3px] rounded-sm bg-[var(--on-accent)]" />
+            <i className="block h-[10px] w-[3px] rounded-sm bg-[var(--on-accent)]" />
+          </span>
+          <span style={{ fontFamily: "var(--display)" }} className="text-lg font-semibold tracking-tight">
+            IntegraMeet
+          </span>
+        </div>
         {nav.map((n) => (
           <button
             key={n.name}
             onClick={() => setRoute({ name: n.name } as Route)}
             aria-current={current === n.name ? "page" : undefined}
-            className={`rounded-lg px-3 py-2 text-left text-sm transition ${
-              current === n.name ? "bg-[var(--accent)]/10 font-medium text-[var(--accent)]" : "text-[var(--muted)] hover:bg-black/5 hover:text-[var(--text)] dark:hover:bg-white/5"
+            className={`rounded-xl px-3 py-2.5 text-left text-sm transition ${
+              current === n.name
+                ? "bg-[var(--accent-tint)] font-semibold text-[var(--accent-strong)]"
+                : "text-[var(--muted)] hover:bg-[var(--panel)] hover:text-[var(--text)]"
             }`}
           >
             {n.label}
@@ -94,10 +105,12 @@ export default function App() {
         {recording && (
           <button
             onClick={() => setRoute({ name: "nova" })}
-            className="mt-auto flex flex-col gap-1 rounded-xl bg-red-500/10 p-3 text-left text-sm"
+            className="mt-auto flex flex-col gap-1.5 rounded-xl border border-[var(--line)] bg-[var(--panel)] p-3.5 text-left text-sm"
           >
-            <span className="flex items-center gap-2 font-medium text-red-700 dark:text-red-300">
-              <span className={`h-2 w-2 rounded-full ${recording.paused ? "bg-amber-500" : "animate-pulse bg-red-600"}`} />
+            <span className="flex items-center gap-2 font-semibold text-[var(--text)]">
+              <span
+                className={`h-2.5 w-2.5 rounded-full ${recording.paused ? "bg-[var(--warn-ink)]" : "animate-pulse bg-[var(--danger)]"}`}
+              />
               {recording.paused ? "Gravação pausada" : "Gravando agora"}
             </span>
             <span className="truncate text-xs text-[var(--muted)]">{recording.title}</span>

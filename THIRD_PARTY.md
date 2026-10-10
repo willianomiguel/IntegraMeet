@@ -10,6 +10,7 @@ O IntegraMeet usa os componentes abaixo. Cada um mantém a sua própria licença
 | Modelos Whisper (ggml-base, ggml-small, ggml-medium) | Transcrição | MIT | https://huggingface.co/ggerganov/whisper.cpp |
 | Modelo Qwen2.5-7B-Instruct (GGUF Q4_K_M) | Análise com IA (perfil Alta qualidade) | Apache 2.0 | https://huggingface.co/Qwen/Qwen2.5-7B-Instruct-GGUF |
 | Modelo Qwen2.5-3B-Instruct (GGUF Q4_K_M) | Análise com IA (perfis Leve e Balanceado) | Qwen Research License (conferir os termos na página) | https://huggingface.co/Qwen/Qwen2.5-3B-Instruct-GGUF |
+| Fraunces e Instrument Sans (fontes do app e da página) | Tipografia | SIL Open Font License 1.1 | https://fonts.google.com |
 | Tauri, React, Tailwind, rusqlite, reqwest e demais crates/pacotes | Base do aplicativo | MIT / Apache 2.0 | Ver `package.json` e `src-tauri/Cargo.toml` |
 
 Os modelos são baixados pelo próprio aplicativo na primeira configuração, diretamente das páginas oficiais acima, e são conferidos por SHA-256 antes de serem usados.
